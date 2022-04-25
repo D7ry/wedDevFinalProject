@@ -36,6 +36,12 @@ const findSchema = new mongoose.Schema({
     claim_Date: {
         type: Date
     },
+    upload_Date: {
+        type: Date
+    },
+    update_Date: {
+        type:Date
+    },
     found_Location: {
         type: String
     },
@@ -52,18 +58,6 @@ const findSchema = new mongoose.Schema({
 
 const FIND = mongoose.model('FIND', findSchema);
 
-/*@return: all items from the database as a .json file.*/
-app.get("/", function (req, res) {
-    FIND.find().exec((a_error, items) => {
-        if (a_error) {
-            console.log(error);
-            res.json({Error: error});
-        } else {
-            res.json(items);
-        }
-    })
-});
-
 app.post("/post", function (req, res) {
     const a_item = new FIND( {
         claimed: false,
@@ -73,6 +67,7 @@ app.post("/post", function (req, res) {
         claim_Location: req.body.claim_Location,
         itemType: req.body.itemType,
         imageUrl: req.body.imageUrl,
+        upload_Date: new Date()
     });
 
     a_item.save((error, doc) => {
@@ -86,13 +81,50 @@ app.post("/post", function (req, res) {
             console.log("post successful");
         }
     })
-})
+});
+
+/*@return: all items from the database as a .json file.*/
+app.get("/list", function (req, res) {
+    FIND.find().exec((a_error, items) => {
+        if (a_error) {
+            console.log(error);
+            res.json({Error: error});
+        } else {
+            res.json(items);
+        }
+    })
+});
+
+app.get("/search", function (req, res) {
+
+});
+
+app.get("/update", function (req, res) {
+    
+});
+
+
 
 app.delete("/delete", function (req, res) {
-    FIND.findOneAndDelete({})
-})
+});
+
+
+
+app.delete("/clear", function (req, res) {
+    FIND.deleteMany({}, (err) => {
+        if (err) {
+            res.json({
+                status: "Failed to clear database."
+            });
+        } else {
+            res.json( {
+                status: "Database cleared"
+            })
+        }
+    });
+});
 
 
 app.listen(port, () => {
     console.log(`Listening on port ${port}`)
-  })
+  });
