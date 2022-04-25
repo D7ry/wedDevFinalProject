@@ -1,0 +1,23 @@
+{
+  "name": "weddevfinalproject-d7ryfork",
+  "version": "1.0.0",
+  "description": "## Summary This is a web-based platform that allows big institutions(college, businesses) to establish their own centralized lost-and-found system, greatly enhancing people's lost-and-found experience.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/D7ry/wedDevFinalProject.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/D7ry/wedDevFinalProject/issues"
+  },
+  "homepage": "https://github.com/D7ry/wedDevFinalProject#readme",
+  "dependencies": {
+    "express": "^4.17.3",
+    "mongoose": "^6.3.1"
+  }
+}
