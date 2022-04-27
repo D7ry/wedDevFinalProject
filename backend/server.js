@@ -96,7 +96,19 @@ app.get("/list", function (req, res) {
 });
 
 app.get("/search", function (req, res) {
+    var a_query = {
+        name: req.body.name
+    }
+    FIND.find(a_query).exec((a_error, items) => {
+        if (a_error) {
+            console.log(error);
+            res.json({Error: error});
+        } else {
+            console.log("found item");
+            res.json(items);
+        }
 
+    })
 });
 
 app.get("/update", function (req, res) {
@@ -106,6 +118,7 @@ app.get("/update", function (req, res) {
 
 
 app.delete("/delete", function (req, res) {
+    
 });
 
 
