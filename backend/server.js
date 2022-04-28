@@ -25,37 +25,37 @@ const itemType = {
 };
 
 const findSchema = new mongoose.Schema({
-    claimed: {
+    _claimed: {
         type: Boolean
     },
-    item: {
+    _name: {
         type: String
     },
-    found_Date: {
+    _found_Date: {
         type: Date
     },
-    claim_Date: {
+    _claim_Date: {
         type: Date
     },
-    upload_Date: {
+    _upload_Date: {
         type: Date
     },
-    update_Date: {
+    _update_Date: {
         type:Date
     },
-    found_Location: {
+    _found_Location: {
         type: String
     },
-    claim_Location: {
+    _claim_Location: {
         type: String
     },
-    misc: {
+    _misc: {
         type: String
     },
-    itemType: {
+    _itemType: {
         type: Number
     },
-    imageUrl: {
+    _imageUrl: {
         type: String
     },
 }, {collection: 'items'});
@@ -63,18 +63,19 @@ const findSchema = new mongoose.Schema({
 const FIND = mongoose.model('FIND', findSchema);
 
 app.post("/post", function (req, res) {
+    console.log(req.params);
     const a_item = new FIND( {
-        claimed: false,
-        item: req.body.item,
-        found_Date: req.body.found_Date,
-        found_Location: req.body.found_Location,
-        claim_Location: req.body.claim_Location,
-        itemType: req.body.itemType,
-        imageUrl: req.body.imageUrl,
-        misc: req.body.additional,
-        upload_Date: new Date()
+        _claimed: false,
+        _name: req.body.name,
+        _found_Date: req.body.found_Date,
+        _found_Location: req.body.found_Location,
+        _claim_Location: req.body.claim_Location,
+        _itemType: req.body.itemType,
+        _imageUrl: req.body.imageUrl,
+        _misc: req.body.misc,
+        _detail: req.body.detail,
+        _upload_Date: new Date()
     });
-
     a_item.save((error, doc) => {
         if (error) {
             res.json({ERROR: error});

@@ -17,9 +17,9 @@ function ItemComponent(props){
             <div class = "itemDesc">location:</div>
             <div>{props.location}</div>
 
-            <div class = "itemDesc">additional information:</div>
+            <div class = "itemDesc">miscellaneous information:</div>
             <div>
-                {props.additional}
+                {props.misc}
             </div>
 
             
