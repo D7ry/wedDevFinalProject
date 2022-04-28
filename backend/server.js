@@ -1,11 +1,12 @@
 const express = require('express');
+const cors = require('cors');
 const app = express();
 
 const port = process.env.PORT || 3000;
 
 app.use(express.json());
 app.use(express.urlencoded());
-
+app.use(cors());
 const mongoose = require('mongoose');
 
 const db = mongoose.connection;
@@ -27,7 +28,7 @@ const findSchema = new mongoose.Schema({
     claimed: {
         type: Boolean
     },
-    name: {
+    item: {
         type: String
     },
     found_Date: {
@@ -48,6 +49,9 @@ const findSchema = new mongoose.Schema({
     claim_Location: {
         type: String
     },
+    misc: {
+        type: String
+    },
     itemType: {
         type: Number
     },
@@ -61,12 +65,13 @@ const FIND = mongoose.model('FIND', findSchema);
 app.post("/post", function (req, res) {
     const a_item = new FIND( {
         claimed: false,
-        name: req.body.name,
+        item: req.body.item,
         found_Date: req.body.found_Date,
         found_Location: req.body.found_Location,
         claim_Location: req.body.claim_Location,
         itemType: req.body.itemType,
         imageUrl: req.body.imageUrl,
+        misc: req.body.additional,
         upload_Date: new Date()
     });
 
@@ -85,15 +90,18 @@ app.post("/post", function (req, res) {
 
 /*@return: all items from the database as a .json file.*/
 app.get("/list", function (req, res) {
+    console.log("fetch reqest")
     FIND.find().exec((error, items) => {
         if (error) {
             console.log(error);
             res.json({Error: error});
         } else {
+            console.log(items);
             res.json(items);
         }
     })
 });
+
 
 app.get("/search", function (req, res) {
     FIND.find(req.body).exec((error, items) => {
