@@ -85,8 +85,8 @@ app.post("/post", function (req, res) {
 
 /*@return: all items from the database as a .json file.*/
 app.get("/list", function (req, res) {
-    FIND.find().exec((a_error, items) => {
-        if (a_error) {
+    FIND.find().exec((error, items) => {
+        if (error) {
             console.log(error);
             res.json({Error: error});
         } else {
@@ -96,15 +96,11 @@ app.get("/list", function (req, res) {
 });
 
 app.get("/search", function (req, res) {
-    var a_query = {
-        name: req.body.name
-    }
-    FIND.find(a_query).exec((a_error, items) => {
-        if (a_error) {
+    FIND.find(req.body).exec((error, items) => {
+        if (error) {
             console.log(error);
             res.json({Error: error});
         } else {
-            console.log("found item");
             res.json(items);
         }
 
@@ -112,7 +108,14 @@ app.get("/search", function (req, res) {
 });
 
 app.get("/update", function (req, res) {
-    
+    FIND.find(req.body).exec((error, item) => {
+        if (error) {
+            console.log(error);
+            res.json({Error: error});
+        } else {
+
+        }
+    })
 });
 
 
