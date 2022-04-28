@@ -63,7 +63,7 @@ const findSchema = new mongoose.Schema({
 const FIND = mongoose.model('FIND', findSchema);
 
 app.post("/post", function (req, res) {
-    console.log(req.params);
+    console.log(req.body);
     const a_item = new FIND( {
         _claimed: false,
         _name: req.body.name,

@@ -1,7 +1,7 @@
 import React from 'react';
-import { useState } from "react";
+import { useState, Component } from "react";
 import ItemComponent from './ItemComponent.js';
-
+import Select from 'react-select'
 
 function ItemShown(){
     /*List of all items displayed on screen */
@@ -21,14 +21,13 @@ function ItemShown(){
         setMisc('');
     };
 
-    const method_post = {method: 'POST'};
     /*Update item list with items contained in a_json*/
     function updateItemList(a_json) {
         setItemList(a_json);
     }
 
     /*Fetch all lost items from the backend, and push them to be displayed.*/
-    async function fetchAllItem() {
+    async function listAllItem() {
         let fetchRes = fetch(
             "http://localhost:3000/list");
             fetchRes.then(res =>
@@ -47,39 +46,28 @@ function ItemShown(){
             detail: buffer_detail,
             
         }
-        let test_body = {
-            "name": "a name",
-            "found_Location": "East asian library",
-            "claim_Location": "moffitt",
-            "imageUrl": "ww.goo",
-            "misc": "this is not expensive"
-        }
-        let a_header = {
-             'Cache-Control': 'no-cache',
-             'Connection': 'keep-alive',
-             'Accept-Encoding': 'gzip, deflate, br',
-             'Accept': 'application/json',
-             'Content-Type': 'application/json',
-        }
+        let a_header = {'Content-Type': 'application/json'};
         let a_fetchSetting = {
                 method: "POST",
-                body: test_body,
-                header: a_header
+                _body: true,
+                body: JSON.stringify(a_body),
+                headers: a_header
         };
 
         console.log("fetch setting:");
         console.log(a_fetchSetting);
         let fetchRes = fetch(
             "http://localhost:3000/post", 
-            a_fetchSetting
+            a_fetchSetting,
         );
         fetchRes.then(res =>
             res.json()).then(a_json => {
                 console.log(a_json)
-                //updateItemList(a_json);
+                listAllItem();
                 //clearInputBuffer();
             });
     }
+
 
     return (
         <div>
@@ -87,7 +75,6 @@ function ItemShown(){
             <h1>FOUND ITEMS</h1>
             {
                 itemList.map((a_item) => {
-                    
                     return <ItemComponent name = 
                     {a_item._name} 
                     time = {a_item._found_Date}
@@ -100,10 +87,10 @@ function ItemShown(){
             <div>
                 <div className='form-inner'>
                     <div className='form-group'>
-                        <input type="text" value ={buffer_name} id = "name" placeholder='WHAT DID YOU FIND?'  onChange={e => setName(e.target.value)} ></input>
+                        <input type="date" value ={buffer_time} id = "time" placeholder='WHEN DID YOU FIND IT?' onChange={e => setTime(e.target.value)} ></input>
                     </div>
                     <div className='form-group'>
-                        <input type="text" value ={buffer_time} id = "time" placeholder='WHEN DID YOU FIND IT?' onChange={e => setTime(e.target.value)} ></input>
+                        <input type="text" value ={buffer_name} id = "name" placeholder='WHAT DID YOU FIND?'  onChange={e => setName(e.target.value)} ></input>
                     </div>
                     <div className='form-group'>
                         <input type="text" value ={buffer_location} id = "loc" placeholder='WHERE DID YOU FIND IT?' onChange={e => setLocation(e.target.value)}></input>
@@ -112,11 +99,11 @@ function ItemShown(){
                         <input type="text" value = {buffer_detail} id = "detail" placeholder='DETAIL' onChange={e => setDetail(e.target.value)} ></input>
                     </div>
                     <div className='additional-info'>
-                        <input type="text" value = {buffer_misc} id = "misc" placeholder='MISC INFO' onChange={e => setMisc(e.target.value)} ></input>
+                        <input type="text" value = {buffer_misc} id = "misc" placeholder='MISC INFO' onChange={e => setMisc(e.target.value)} ></input>              
                     </div>
                 </div>
                 <button id = 'submitBtn' onClick={onSubmit}>SUBMIT</button>
-            </div>
+                </div>
         </div>
     );
 
