@@ -21,6 +21,7 @@ function ItemShown(){
         setLocation('');
         setMisc('');
         setType();
+        setDetail('');
     };
 
     /*Update item list with items contained in a_json*/
@@ -78,8 +79,8 @@ function ItemShown(){
         fetchRes.then(res =>
             res.json()).then(a_json => {
                 console.log(a_json)
-                listAllItem();
-                //clearInputBuffer();
+                //listAllItem
+                clearInputBuffer();
             });
     }
 
@@ -136,6 +137,7 @@ function ItemShown(){
                 </div>
                 <button id = 'submitBtn' onClick={onSubmit}>SUBMIT</button>
                 <button id = 'button_filter' onClick={onFilter}>FILTER</button>
+                <button id = 'list_all' onClick={listAllItem}>SHOW ALL ITEM</button>
                 </div>
         </div>
     );
