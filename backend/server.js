@@ -14,15 +14,6 @@ const url = "mongodb://127.0.0.1:27017/find";
 
 mongoose.connect(url, { useUnifiedTopology: true, useNewUrlParser: true });
 
-const itemType = {
-    phone: 1,
-    laptop: 2,
-    earphone: 3,
-    card: 4,
-    wallet: 5,
-    apparel: 6,
-    misc: 7
-};
 
 const findSchema = new mongoose.Schema({
     _claimed: {
@@ -53,11 +44,14 @@ const findSchema = new mongoose.Schema({
         type: String
     },
     _itemType: {
-        type: Number
+        type: String
     },
     _imageUrl: {
         type: String
     },
+    _detail: {
+        type: String
+    }
 }, {collection: 'items'});
 
 const FIND = mongoose.model('FIND', findSchema);

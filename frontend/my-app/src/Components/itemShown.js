@@ -12,13 +12,15 @@ function ItemShown(){
     const [buffer_location, setLocation] = useState();
     const [buffer_misc, setMisc] = useState();
     const [buffer_detail, setDetail] = useState();
-    
+    const [buffer_type, setType] = useState();
+
     /*Reset all input buffer back to empty*/
     function clearInputBuffer() {
         setName('');
         setTime('');
         setLocation('');
         setMisc('');
+        setType();
     };
 
     /*Update item list with items contained in a_json*/
@@ -37,14 +39,27 @@ function ItemShown(){
                 })
     }
 
+    async function onFilter() {
+        let fetchRes = fetch(
+            "http://localhost:3000/list");
+            fetchRes.then(res =>
+                res.json()).then(a_json => {
+                    console.log(a_json)
+                    let filtered_json = a_json.filter(element => element._itemType === buffer_type);
+                    console.log(filtered_json);
+                    updateItemList(filtered_json);
+                })
+    }
+
     function onSubmit() {
+        console.log(buffer_detail);
         let a_body = {
             name: buffer_name,
             found_Date: buffer_time,
             found_Location: buffer_location,
             misc: buffer_misc,
             detail: buffer_detail,
-            
+            itemType: buffer_type
         }
         let a_header = {'Content-Type': 'application/json'};
         let a_fetchSetting = {
@@ -68,6 +83,15 @@ function ItemShown(){
             });
     }
 
+    const item_type = [
+        { value: 'phone', label: 'phone' },
+        { value: 'laptop', label: 'laptop' },
+        { value: 'earphone', label: 'earphone' },
+        { value: 'card', label: 'card' },
+        { value: 'wallet', label: 'wallet' },
+        { value: 'earphone', label: 'apparel' },
+        { value: 'misc', label: 'misc'}
+      ]
 
     return (
         <div>
@@ -87,22 +111,31 @@ function ItemShown(){
             <div>
                 <div className='form-inner'>
                     <div className='form-group'>
+                        <d>Found Date: </d>
                         <input type="date" value ={buffer_time} id = "time" placeholder='WHEN DID YOU FIND IT?' onChange={e => setTime(e.target.value)} ></input>
                     </div>
                     <div className='form-group'>
+                        <d>Item Name: </d>
                         <input type="text" value ={buffer_name} id = "name" placeholder='WHAT DID YOU FIND?'  onChange={e => setName(e.target.value)} ></input>
                     </div>
                     <div className='form-group'>
+                        <d>Found Location:</d>
                         <input type="text" value ={buffer_location} id = "loc" placeholder='WHERE DID YOU FIND IT?' onChange={e => setLocation(e.target.value)}></input>
                     </div>
-                    <div className='additional-info'>
+                    <div className='detail'>
+                        <d>Item Detail: </d>
                         <input type="text" value = {buffer_detail} id = "detail" placeholder='DETAIL' onChange={e => setDetail(e.target.value)} ></input>
                     </div>
-                    <div className='additional-info'>
+                    <div className='miselaneous'>
+                        <d>Misc Info: </d>
                         <input type="text" value = {buffer_misc} id = "misc" placeholder='MISC INFO' onChange={e => setMisc(e.target.value)} ></input>              
+                    </div>
+                    <div className='additional-info'>
+                    <Select options={item_type} id = 'type' onChange={e =>setType(e.value)} />
                     </div>
                 </div>
                 <button id = 'submitBtn' onClick={onSubmit}>SUBMIT</button>
+                <button id = 'button_filter' onClick={onFilter}>FILTER</button>
                 </div>
         </div>
     );
